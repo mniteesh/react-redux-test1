@@ -22,7 +22,7 @@ const ProductDetails = () => {
     return () => {
       dispatch(removeProduct());
     };
-  }, [productId]);
+  });
 
   return (
     <div className="ui grid container">
