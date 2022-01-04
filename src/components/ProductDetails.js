@@ -6,25 +6,22 @@ import { selectedProduct, removeProduct } from "../redux/action/ProductAction";
 
 const ProductDetails = () => {
   const product = useSelector((state) => state.product);
-  const {image,title,price,category,description} = product;
+  const { image, title, price, category, description } = product;
   const { productId } = useParams();
   const dispatch = useDispatch();
-  const fetchProducts = async () => {
+  const fetchProducts = async (id) => {
     const response = await axios
-      .get(`https://fakestoreapi.com/products/${productId}`)
+      .get(`https://fakestoreapi.com/products/${id}`)
       .catch((err) => {
         console.log("Error", err);
       });
     dispatch(selectedProduct(response.data));
   };
   useEffect(() => {
-    if (productId && productId !== "") {
-      fetchProducts();
-    }
-
-    return ()=>{
-        dispatch(removeProduct())
-    }
+    if (productId && productId !== "") fetchProducts(productId);
+    return () => {
+      dispatch(removeProduct());
+    };
   }, [productId]);
 
   return (
@@ -37,12 +34,14 @@ const ProductDetails = () => {
             <div className="ui vertical divider">AND</div>
             <div className="middle aligned row">
               <div className="column lp">
-                <img className="ui fluid image" src={image} />
+                <img className="ui fluid image" alt={title} src={image} />
               </div>
               <div className="column rp">
                 <h1>{title}</h1>
                 <h2>
-                  <a className="ui teal tag label">${price}</a>
+                  <a className="ui teal tag label" href="/">
+                    ${price}
+                  </a>
                 </h2>
                 <h3 className="ui brown block header">{category}</h3>
                 <p>{description}</p>
